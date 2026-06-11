@@ -29,7 +29,6 @@ The template dynamically parses the exporter data using Prometheus pattern prepr
 | **Max Children Reached** | `phpfpm.max_children` | Counter Delta | **HIGH:** Warning if the pool maxes out process allocations. |
 | **Slow Requests Tally** | `phpfpm.slow_requests` | Counter Delta | Increments if your PHP code hits a performance bottleneck. |
 | **Total Accepted Connections** | `phpfpm.connections.total` | Counter | **INFO:** Flipped counter triggers an auto-closing event log on service restarts. |
-| **Traffic Throughput** | `phpfpm.connections.rate` | Deriv (Float) | Tracks active processed requests per second. |
 
 ---
 
