@@ -1,0 +1,312 @@
+{
+    "zabbix_export": {
+        "version": "7.2",
+        "template_groups": [
+            {
+                "uuid": "a571c0d144b14fd4a87a9d9b2aa9fcd6",
+                "name": "Templates/Applications"
+            }
+        ],
+        "templates": [
+            {
+                "uuid": "9d6981a6eee8435abf5cd296303ce388",
+                "template": "PHP-FPM by HTTP Exporter",
+                "name": "PHP-FPM by HTTP Exporter",
+                "description": "https://github.com/bakins/php-fpm-exporter",
+                "vendor": {
+                    "name": "Lu Maw",
+                    "version": "7.2-0"
+                },
+                "groups": [
+                    {
+                        "name": "Templates/Applications"
+                    }
+                ],
+                "items": [
+                    {
+                        "uuid": "eaf22ed0c9d84c1b8d4b74b441f3504e",
+                        "name": "PHP-FPM: Total Accepted Connections (Raw)",
+                        "type": "DEPENDENT",
+                        "key": "phpfpm.connections.total",
+                        "history": "7d",
+                        "description": "Tracks the total number of accepted connections handled by PHP-FPM since the service started. This raw counter is used mathematically by dependent triggers to detect pool restarts via counter resets. Source metric: phpfpm_accepted_connections_total.",
+                        "preprocessing": [
+                            {
+                                "type": "PROMETHEUS_PATTERN",
+                                "parameters": [
+                                    "phpfpm_accepted_connections_total",
+                                    "value",
+                                    ""
+                                ]
+                            }
+                        ],
+                        "master_item": {
+                            "key": "php_fpm.get_metrics"
+                        },
+                        "tags": [
+                            {
+                                "tag": "component",
+                                "value": "php-fpm"
+                            }
+                        ],
+                        "triggers": [
+                            {
+                                "uuid": "175153a63eb64c0f9f7d1efdb6144a8b",
+                                "expression": "change(/PHP-FPM by HTTP Exporter/phpfpm.connections.total)<0",
+                                "name": "PHP-FPM: Pool has been restarted",
+                                "priority": "DISASTER",
+                                "manual_close": "YES"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "aff185db98f84306b8ab752d6412e6b4",
+                        "name": "PHP-FPM: Max Children Reached",
+                        "type": "DEPENDENT",
+                        "key": "phpfpm.max_children",
+                        "preprocessing": [
+                            {
+                                "type": "PROMETHEUS_PATTERN",
+                                "parameters": [
+                                    "phpfpm_max_children_reached_total",
+                                    "value",
+                                    ""
+                                ]
+                            },
+                            {
+                                "type": "SIMPLE_CHANGE"
+                            }
+                        ],
+                        "master_item": {
+                            "key": "php_fpm.get_metrics"
+                        },
+                        "tags": [
+                            {
+                                "tag": "component",
+                                "value": "php-fpm"
+                            }
+                        ],
+                        "triggers": [
+                            {
+                                "uuid": "24318b79c2f24350bc280c4d74228b5e",
+                                "expression": "last(/PHP-FPM by HTTP Exporter/phpfpm.max_children)>0",
+                                "name": "PHP-FPM: Pool worker limit reached (max_children exceeded)",
+                                "opdata": "Value: {ITEM.LASTVALUE}",
+                                "priority": "HIGH",
+                                "manual_close": "YES"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "a35d3cfb8955416db02b2c689caee431",
+                        "name": "PHP-FPM: Active Processes",
+                        "type": "DEPENDENT",
+                        "key": "phpfpm.processes.active",
+                        "preprocessing": [
+                            {
+                                "type": "PROMETHEUS_PATTERN",
+                                "parameters": [
+                                    "phpfpm_processes_total{state=\"active\"}",
+                                    "value",
+                                    ""
+                                ]
+                            }
+                        ],
+                        "master_item": {
+                            "key": "php_fpm.get_metrics"
+                        },
+                        "tags": [
+                            {
+                                "tag": "component",
+                                "value": "php-fpm"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "b49ca246b58542c2abb5c47219a61f77",
+                        "name": "PHP-FPM: Idle Processes",
+                        "type": "DEPENDENT",
+                        "key": "phpfpm.processes.idle",
+                        "preprocessing": [
+                            {
+                                "type": "PROMETHEUS_PATTERN",
+                                "parameters": [
+                                    "phpfpm_processes_total{state=\"idle\"}",
+                                    "value",
+                                    ""
+                                ]
+                            }
+                        ],
+                        "master_item": {
+                            "key": "php_fpm.get_metrics"
+                        },
+                        "tags": [
+                            {
+                                "tag": "component",
+                                "value": "php-fpm"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "2a1e74d66c374b938e65d44a987304ba",
+                        "name": "PHP-FPM: Queue Connections",
+                        "type": "DEPENDENT",
+                        "key": "phpfpm.queue.current",
+                        "preprocessing": [
+                            {
+                                "type": "PROMETHEUS_PATTERN",
+                                "parameters": [
+                                    "phpfpm_listen_queue_connections",
+                                    "value",
+                                    ""
+                                ]
+                            }
+                        ],
+                        "master_item": {
+                            "key": "php_fpm.get_metrics"
+                        },
+                        "tags": [
+                            {
+                                "tag": "component",
+                                "value": "php-fpm"
+                            }
+                        ],
+                        "triggers": [
+                            {
+                                "uuid": "48c036f366ca4fd18bd5bf9d14a80ff6",
+                                "expression": "last(/PHP-FPM by HTTP Exporter/phpfpm.queue.current)>5",
+                                "name": "PHP-FPM: Slowness Detected",
+                                "opdata": "Value: {ITEM.LASTVALUE}",
+                                "priority": "AVERAGE",
+                                "manual_close": "YES"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "99ab2a1fd4d24a12895ed6cefc1b8c69",
+                        "name": "PHP-FPM: Slow Requests",
+                        "type": "DEPENDENT",
+                        "key": "phpfpm.slow_requests",
+                        "preprocessing": [
+                            {
+                                "type": "PROMETHEUS_PATTERN",
+                                "parameters": [
+                                    "phpfpm_slow_requests_total",
+                                    "value",
+                                    ""
+                                ]
+                            },
+                            {
+                                "type": "SIMPLE_CHANGE"
+                            }
+                        ],
+                        "master_item": {
+                            "key": "php_fpm.get_metrics"
+                        },
+                        "tags": [
+                            {
+                                "tag": "component",
+                                "value": "php-fpm"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "7fb7290863de449ea36919db52fd216e",
+                        "name": "PHP-FPM: Status",
+                        "type": "DEPENDENT",
+                        "key": "phpfpm.up",
+                        "valuemap": {
+                            "name": "PHP-FPM service status"
+                        },
+                        "preprocessing": [
+                            {
+                                "type": "PROMETHEUS_PATTERN",
+                                "parameters": [
+                                    "phpfpm_up",
+                                    "value",
+                                    ""
+                                ]
+                            }
+                        ],
+                        "master_item": {
+                            "key": "php_fpm.get_metrics"
+                        },
+                        "tags": [
+                            {
+                                "tag": "component",
+                                "value": "php-fpm"
+                            }
+                        ],
+                        "triggers": [
+                            {
+                                "uuid": "7a27b444b05b4e1b83f4f25226a6ad12",
+                                "expression": "nodata(/PHP-FPM by HTTP Exporter/phpfpm.up, 5m)=1",
+                                "name": "PHP-FPM: Failed to fetch metrics (Endpoint unreachable)",
+                                "priority": "DISASTER",
+                                "description": "Fires if no data is received for 3 minutes.",
+                                "manual_close": "YES"
+                            },
+                            {
+                                "uuid": "797382207f4841baa363d0b919011b4b",
+                                "expression": "last(/PHP-FPM by HTTP Exporter/phpfpm.up)=0",
+                                "name": "PHP-FPM Service Down",
+                                "opdata": "Value: {ITEM.LASTVALUE}",
+                                "priority": "DISASTER",
+                                "manual_close": "YES"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "17e47d2889274a378af9e3a895015c59",
+                        "name": "PHP-FPM: Get All Metrics",
+                        "type": "HTTP_AGENT",
+                        "key": "php_fpm.get_metrics",
+                        "delay": "3m",
+                        "history": "0",
+                        "value_type": "TEXT",
+                        "url": "http://{HOST.CONN}:{$PHPFPM.PORT}/metrics",
+                        "tags": [
+                            {
+                                "tag": "component",
+                                "value": "php-fpm"
+                            }
+                        ]
+                    }
+                ],
+                "tags": [
+                    {
+                        "tag": "class",
+                        "value": "application"
+                    },
+                    {
+                        "tag": "target",
+                        "value": "php-fpm"
+                    }
+                ],
+                "macros": [
+                    {
+                        "macro": "{$PHPFPM.PORT}",
+                        "value": "9253",
+                        "description": "Port used by the php-fpm-exporter binary."
+                    }
+                ],
+                "valuemaps": [
+                    {
+                        "uuid": "a093968c82324e749dc1ed8ec2730c78",
+                        "name": "PHP-FPM service status",
+                        "mappings": [
+                            {
+                                "value": "0",
+                                "newvalue": "Down"
+                            },
+                            {
+                                "value": "1",
+                                "newvalue": "Up"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+}
