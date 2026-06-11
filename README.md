@@ -12,7 +12,6 @@ A production-ready, highly optimized Zabbix template designed to monitor PHP-FPM
 - **Master/Dependent Item Architecture:** Performs exactly *one* network request per polling cycle to extract all data, completely eliminating unnecessary scraping overhead on your production application server.
 - **Zabbix 7.2+ Native Formatting:** Built and structured to support the latest JSON import schemas.
 - **Port Flexibility:** Built using user macros, allowing you to quickly change target firewall ports without altering the core items.
-- **Human-Readable States:** Integrated value mapping translates raw binary `0` and `1` values into transparent `Up` / `Down` service indicators.
 
 ---
 
@@ -23,7 +22,7 @@ The template dynamically parses the exporter data using Prometheus pattern prepr
 | Metric Name | Zabbix Key | Type | Trigger Threshold / Alert |
 | :--- | :--- | :--- | :--- |
 | **PHP-FPM Status** | `phpfpm.up` | Gauge | **DISASTER:** Fires instantly if the service crashes. |
-| **Exporter Reachability** | `phpfpm.up` | No Data | **DISASTER:** Fires if Zabbix gets 3 minutes of total network silence. |
+| **Exporter Reachability** | `phpfpm.up` | No Data | **DISASTER:** Fires if Zabbix gets 5 minutes of total network silence. |
 | **Active Processes** | `phpfpm.processes.active` | Gauge | Performance tracking curve. |
 | **Idle Processes** | `phpfpm.processes.idle` | Gauge | Pool scaling curve. |
 | **Listen Queue Length** | `phpfpm.queue.current` | Gauge | **AVERAGE:** Fires if > 5 requests are stuck waiting in line. |
