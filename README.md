@@ -26,8 +26,8 @@ The template dynamically parses the exporter data using Prometheus pattern prepr
 | **Active Processes** | `phpfpm.processes.active` | Gauge | Performance tracking curve. |
 | **Idle Processes** | `phpfpm.processes.idle` | Gauge | Pool scaling curve. |
 | **Listen Queue Length** | `phpfpm.queue.current` | Gauge | **AVERAGE:** Fires if > 5 requests are stuck waiting in line. |
-| **Max Children Reached** | `phpfpm.max_children` | Counter Delta | **HIGH:** Warning if the pool maxes out process allocations. |
-| **Slow Requests Tally** | `phpfpm.slow_requests` | Counter Delta | Increments if your PHP code hits a performance bottleneck. |
+| **Max Children Reached** | `phpfpm.max_children` | Counter | **HIGH:** Warning if the pool maxes out process allocations. |
+| **Slow Requests Tally** | `phpfpm.slow_requests` | Counter | Increments if your PHP code hits a performance bottleneck. |
 | **Total Accepted Connections** | `phpfpm.connections.total` | Counter | **INFO:** Flipped counter triggers an auto-closing event log on service restarts. |
 
 ---
