@@ -65,8 +65,7 @@ To ensure that your network firewalls (firewalld, AWS Security Groups, etc.) all
 curl http://<YOUR_APP_SERVER_IP>:9253/metrics
 ```
 
-Expected Output
-If everything is working, you should instantly see a wall of raw Prometheus text metrics. Look specifically for phpfpm_up 1 at the bottom, which confirms successful communication between the exporter and the PHP-FPM socket:
+If everything is working, you should instantly see a wall of raw Prometheus text metrics. Look specifically for **phpfpm_up 1** at the bottom, which confirms successful communication between the exporter and the PHP-FPM socket:
 
 ```bash
 # HELP phpfpm_up able to contact php-fpm
