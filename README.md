@@ -58,4 +58,4 @@ Click **Import** in the top-right corner, upload the JSON file, and confirm.
 
 Link the template to your designated host (e.g., your web server).
 
-(Optional) If your exporter runs on a port other than 9253, navigate to your host's Macros configuration tab and update the {$PHPFPM.PORT} variable.
+(Optional) If your exporter runs on a port other than **9253**, navigate to your host's Macros configuration tab and update the **{$PHPFPM.PORT}** variable.
