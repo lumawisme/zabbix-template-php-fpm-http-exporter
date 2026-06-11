@@ -12,7 +12,7 @@
                 "uuid": "9d6981a6eee8435abf5cd296303ce388",
                 "template": "PHP-FPM by HTTP Exporter",
                 "name": "PHP-FPM by HTTP Exporter",
-                "description": "https://github.com/bakins/php-fpm-exporter",
+                "description": "https://github.com/lumawisme/zabbix-template-php-fpm-http-exporter",
                 "vendor": {
                     "name": "Lu Maw",
                     "version": "7.2-0"
