@@ -2,12 +2,12 @@
 
 A production-ready, highly optimized Zabbix template designed to monitor PHP-FPM performance metrics seamlessly. 
 
-> ⚠️ **Credits & Acknowledgments**
+> **Credits & Acknowledgments**
 > This repository contains **only the Zabbix template configuration**. All credit for the underlying metrics collection engine goes to the creator of the original Prometheus exporter: **[bakins/php-fpm-exporter](https://github.com/bakins/php-fpm-exporter)**. If you use this monitoring integration, please consider starring their original repository!
 
 ---
 
-## 🚀 Template Design Features
+## Template Design Features
 
 - **Master/Dependent Item Architecture:** Performs exactly *one* network request per polling cycle to extract all data, completely eliminating unnecessary scraping overhead on your production application server.
 - **Zabbix 7.2+ Native Formatting:** Built and structured to support the latest JSON import schemas.
@@ -15,7 +15,7 @@ A production-ready, highly optimized Zabbix template designed to monitor PHP-FPM
 
 ---
 
-## 📊 Monitored Metrics & Triggers
+## Monitored Metrics & Triggers
 
 The template dynamically parses the exporter data using Prometheus pattern preprocessing rules to track:
 
@@ -32,7 +32,7 @@ The template dynamically parses the exporter data using Prometheus pattern prepr
 
 ---
 
-## 🛠️ Prerequisites & Setup
+## Prerequisites & Setup
 
 ### 1. Enable the PHP-FPM Status Page
 Your target server pool configuration (usually `/etc/php-fpm.d/www.conf`) must have its status endpoint uncommented and enabled:
@@ -47,7 +47,34 @@ Download and execute the binary from bakins/php-fpm-exporter targeting the indus
 ./php-fpm-exporter --fastcgi unix:///run/php-fpm/www.sock --addr 0.0.0.0:9253
 ```
 
-## 📥 Installation
+## Verifying the Metrics URL
+
+Before configuring the template in Zabbix, it is recommended to verify that the exporter is running correctly and broadcasting data. 
+
+### 1. Local Verification (On the host server)
+Log into your application/PHP server via SSH and run a `curl` command against the exporter's standard port:
+
+```bash
+curl [http://127.0.0.1:9253/metrics](http://127.0.0.1:9253/metrics)
+```
+
+### 2. Remote Verification (From your Zabbix Server)
+To ensure that your network firewalls (firewalld, AWS Security Groups, etc.) allow traffic between Zabbix and your application server, run this command from your Zabbix Server terminal:
+
+```bash
+curl http://<YOUR_APP_SERVER_IP>:9253/metrics
+```
+
+Expected Output
+If everything is working, you should instantly see a wall of raw Prometheus text metrics. Look specifically for phpfpm_up 1 at the bottom, which confirms successful communication between the exporter and the PHP-FPM socket:
+
+```bash
+# HELP phpfpm_up able to contact php-fpm
+# TYPE phpfpm_up gauge
+phpfpm_up 1
+```
+
+## Installation
 Download the **template_php_fpm_http_exporter.json** file from this repository.
 
 In your Zabbix Web Console, navigate to **Data collection > Templates**.
